@@ -106,6 +106,6 @@ ZTrace.pb.cpp ZTrace.pb.h Registers.pb.cpp Registers.pb.h: ZTrace.proto
 	protoc --cpp_out=. ZTrace.proto Registers.proto
 	mv ZTrace.pb.cc ZTrace.pb.cpp
 	mv Registers.pb.cc Registers.pb.cpp
-	protoc --python_out=tools ZTrace.proto Registers.proto
-	protoc --python_out=dbtools/ztrace ZTrace.proto Registers.proto
+	protoc --python_out=tools/ztrace ZTrace.proto Registers.proto
+	protoc --python_out=oldtools ZTrace.proto Registers.proto
 
