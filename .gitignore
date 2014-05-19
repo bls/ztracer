@@ -23,6 +23,7 @@
 # Protobuf
 *.pb.cpp
 *.pb.h
+*_pb2.py
 
 # Python stuff
 *.pyc
