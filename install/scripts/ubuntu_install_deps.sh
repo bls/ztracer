@@ -1,7 +1,5 @@
 #!/bin/bash
 
-PTRACE_SYSCTL=kernel.yama.ptrace_scope
-PTRACE_CONF=/etc/sysctl.d/10-ptrace.conf
 BASE_PKGS="build-essential liblog4cpp5-dev libprotobuf-dev libsnappy-dev python-snappy python-protobuf"
 NEW_COMPAT_PKGS="libc6-i386 libstdc++6:i386"
 OLD_COMPAT_PKGS="ia32-libs"
@@ -47,10 +45,6 @@ EOM
 
     read
     apt-get install $COMPAT $BASE_PKGS
-
-    ./fix_ptrace_ubuntu.sh
-    
-    echo "OK, all done."
 }
 
 main

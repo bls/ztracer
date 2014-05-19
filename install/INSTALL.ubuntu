@@ -1,0 +1,24 @@
+
+UBUNTU INSTALLATION
+===================
+
+* Install dependencies and (optionally) enable ptrace of non-child processes. No changes to
+  your system will be made without your approval.
+
+        cd ztracer/install/scripts
+        ./ubuntu_install_deps.sh
+        ./ubuntu_fix_ptrace.sh
+
+* Install PIN (installs a local copy for ZTracer). This downloads a fresh copy of pin, unpacks
+  it inside the ztracer directory and creates an environment setup file.
+
+        cd ztracer
+        ./setup_pin.sh
+
+* Build the software:
+   
+        cd ztracer/src
+        make
+
+* You're ready to trace.
+

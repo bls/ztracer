@@ -1,0 +1,50 @@
+
+GENERIC LINUX INSTALLATION
+==========================
+
+* Ensure your machine has g++ and development headers.
+
+* Download and unpack PIN (Intel's DBI software). The "setup_pin.sh" script
+  will download and unpack inside the ztracer directory, as well as creating
+  a script with required environment variables.
+
+        cd ztracer
+        ./setup_pin.sh
+
+* Depending on your distro, you may need to enable ptrace for non-child 
+  processes. See the PIN README, section "Additional information for using 
+  Pin on Linux" for more details. 
+
+        sudo sh -c "echo 0 > /proc/sys/kernel/yama/ptrace_scope"
+
+* Set PIN environment variables
+  
+        cd ztracer
+        source pin_env.sh
+
+* Optionally, test the PIN kit on your platform. This may take a long time, but
+  might be worth it if you're not sure how well PIN runs on your platform.
+
+        cd $PIN_HOME/source/tools
+        make test
+
+* Install ztracer's C++ dependencies. If you are using a package manager, be sure
+  get the development versions of the packages (with headers).
+
+        log4cpp
+        protobuf
+        snappy
+
+* Install ztracer's Python dependencies. You can either do this via your OS package
+  manager or a Python package manager such as "pip" or "easy_install".
+
+        python-snappy
+        protobuf
+
+* Build the software
+
+        cd ztracer/src
+        make
+
+* You're ready to trace.
+

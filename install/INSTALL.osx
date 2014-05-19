@@ -1,0 +1,23 @@
+
+OSX INSTALLATION
+================
+
+* Ensure you've got XCode installed
+
+* Install the "brew" package manager from http://brew.sh/
+
+* Use brew to install C++ dependencies
+
+        brew install protobuf log4cpp snappy 
+
+* Use easy_install to install Python dependencies
+
+        sudo easy_install protobuf python-snappy
+
+* Compile the software
+
+        cd ztracer/src
+        make
+
+* You're ready to trace.
+

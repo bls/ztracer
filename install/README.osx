@@ -1,9 +1,0 @@
-
-# Install the "brew" package manager from http://brew.sh/
-
-brew install protobuf log4cpp snappy 
-sudo easy_install protobuf python-snappy
-
-cd xpintools/ztracer
-make PIN_ROOT=/path/to/pin 
-
