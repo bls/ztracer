@@ -1,0 +1,42 @@
+
+* http://shell-storm.org/repo/Notepad/more-Pin-stuff-references.txt
+
+^ Another good reference list :)
+
+* https://bitbucket.org/mihaila/bintrace/
+
+This is SO close to what I want...
+
+* http://rajeshdon79.blogspot.com.au/2010/08/system-implementation.html
+
+Discussion of taint system implementation.
+
+* http://blog.rewolf.pl/blog/?p=573#.UU_mExxmiSo 
+
+Detailed reverse engineering info on Windows PEB.
+
+* http://stackoverflow.com/questions/15470922/object-code-relocation-and-intel-pin-interaction
+
+Stuff about relocs. Need to check this, for both symbol resolution and other reasons...
+
+* http://bap.ece.cmu.edu/download/bap-0.5/pintraces/gentrace.cpp
+
+So, the above could use some analysis:
+
+These guys have awesome code. Well, it's kind of incomplete, but there's plenty
+of advanced stuff in there too...
+
+* http://shell-storm.org/blog/Taint-analysis-and-pattern-matching-with-Pin/
+* http://shell-storm.org/blog/In-Memory-fuzzing-with-Pin/
+
+Another pair of good PIN articles.
+
+* http://shell-storm.org/blog/Binary-analysis-Concolic-execution-with-Pin-and-z3/
+
+Aaaaand - he wrote another one. This is good; constraint solving with PIN, largely
+orthogonal to what we're doing though.
+
+* http://doar-e.github.io/blog/2013/08/31/some-thoughts-about-code-coverage-measurement-with-pin/
+
+* http://rehints.com/2013-09-02-Type-REconstruction-in-HexRaysCodeXplorer.html - type recovery in hex-rays
+

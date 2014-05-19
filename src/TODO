@@ -1,0 +1,28 @@
+
+Linux: 
+
+malloc, calloc, realloc, free
+
+mmap, munmap, mmap2, mremap
+
+brk, sbrk (?)
+
+See also: https://bitbucket.org/mihaila/bintrace/
+
+That looks like it has the stuff I need.
+
+vtable lookups?
+
+symbol dumping?
+
+It would be amusing to fuzz a binary and then run it under a suitable pintool to find instruction
+sequences which confuse PIN. PIN countermeasures, if you will :)  Look for crashes that kill the PIN
+tool itself, not just the program.
+
+OP_NEWPC takes up a lot of space, it seems; maybe makes sense to only log BBL hits sometimes?
+
+1) Scan for module map
+2) Scan for BBLs
+3) Scan for PC text
+4) Scan for symbols
+

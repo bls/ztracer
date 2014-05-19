@@ -1,0 +1,263 @@
+
+package ztrace;
+
+import "Registers.proto";
+
+// A ZTrace file consists of a series of "Event" messages, 
+// (defined at bottom of file), starting with a TraceStart
+// and ending with a TraceEnd. 
+
+// For efficiency reasons, memory and register transactions
+// (fine grained detail logging) are not serialized through 
+// protocol buffers.
+
+message MicroEventLog {
+    required uint64 start_instruction = 1;
+    required bytes data = 2;
+}
+
+// ----------------------------
+// Diassembly
+// ----------------------------
+
+message InsDisassembly {
+    required uint64 pc = 1; // eip
+    required string text = 2; // disasm text
+    optional bytes raw_bytes = 3; // raw bytes
+}
+
+message BBLDisassembly {
+    repeated InsDisassembly ins_disasm = 1;
+}
+
+message TraceDisassembly {
+    repeated BBLDisassembly bbl_disasm = 1;
+}
+
+// ----------------------------
+// Modules
+// ----------------------------
+
+message Section {
+    required string name = 1; 
+    required uint64 address = 2;
+    required uint64 size = 3;
+    enum SectionType {
+         SEC_TYPE_INVALID = 0;
+         SEC_TYPE_UNUSED = 1;
+         SEC_TYPE_REGREL = 2;
+         SEC_TYPE_DYNREL = 3;
+         SEC_TYPE_EXEC = 4;
+         SEC_TYPE_DATA = 5;
+         SEC_TYPE_DYNAMIC = 6;
+         SEC_TYPE_OPD = 7;
+         SEC_TYPE_GOT = 8;
+         SEC_TYPE_STACK = 9;
+         SEC_TYPE_PLTOFF = 10;
+         SEC_TYPE_HASH = 11;
+         SEC_TYPE_LSDA = 12;
+         SEC_TYPE_UNWIND = 13;
+         SEC_TYPE_UNWINDINFO = 14;
+         SEC_TYPE_REGSYM = 15;
+         SEC_TYPE_DYNSYM = 16;
+         SEC_TYPE_DEBUG = 17;
+         SEC_TYPE_BSS = 18;
+         SEC_TYPE_SYMSTR = 19;
+         SEC_TYPE_DYNSTR = 20;
+         SEC_TYPE_SECSTR = 21;
+         SEC_TYPE_COMMENT = 22;
+         SEC_TYPE_LOOS = 23;
+         SEC_TYPE_USER = 24;
+         SEC_TYPE_UNKNOWN = 999;
+    }
+    required SectionType type = 4;    
+    required bool mapped = 5;
+    required bool is_readable = 6;
+    required bool is_writeable = 7;
+    required bool is_executable = 8;
+}
+
+message ModuleLoad {
+    required uint32 id = 1;
+    required string name = 2;
+    required uint64 low_address = 3;
+    required uint64 high_address = 4;
+    required uint64 load_offset = 5;
+    enum ImageType {
+         IMG_TYPE_INVALID = 0;
+         IMG_TYPE_STATIC = 1;
+         IMG_TYPE_SHARED = 2;
+         IMG_TYPE_SHAREDLIB = 3;
+         IMG_TYPE_RELOCATABLE = 4;
+         IMG_TYPE_UNKNOWN = 999;
+    }
+    required ImageType image_type = 6;
+    required bool is_main_executable = 7;
+    required bool is_static_executable = 8;
+    repeated Section section = 9;
+    optional bytes contents = 10;
+}
+
+message ModuleUnload {
+    required uint32 id = 1;
+}
+
+
+
+// ----------------------------
+// Symbols
+// ----------------------------
+
+message SymbolEntry {
+    required uint64 address = 1;
+    required string name = 2;
+    required string undecorated_name = 3;
+    required bool is_dynamic = 4;
+    required bool is_ifunc = 5;
+}
+
+message ModuleSymbols {
+    required uint32 module_id = 1;
+    required string module_name = 2;
+    repeated SymbolEntry sym = 3;
+}
+
+
+// ----------------------------
+// new / delete
+// ----------------------------
+
+// ?
+
+// ----------------------------
+// stdlib Memory allocation
+// ----------------------------
+
+message Malloc {
+    required uint64 n = 1;   // size_t
+    required uint64 ret = 2; // void *
+}
+
+// Do I need calloc? Or just malloc?
+message Calloc {
+    required uint64 n = 1;   // size_t
+    required uint64 ret = 2; // void *
+}
+
+message Free {
+    required uint64 p = 1;   // void *
+}
+
+message Realloc {
+    required uint64 p = 1;   // void *
+    required uint64 n = 2;   // size_t
+    required uint64 ret = 3; // void *
+}
+
+message HeapOperation {
+    optional Malloc malloc = 1;
+    optional Free free = 2;
+    optional Realloc realloc = 3;
+}
+
+// --------------------------------
+// Generic function instrumentation
+// --------------------------------
+
+message Value {
+    optional uint64 v_uint64 = 1;
+    optional int64 v_int64 = 2;
+}
+
+message FunctionArgument {
+    required Value value = 1;
+}
+
+message FunctionCall {
+    required string name = 1;
+    required uint32 module_id = 2;
+    optional Value ret = 3;
+    repeated Value arg = 4;
+}
+
+
+// ----------------------------
+// Threads
+// ----------------------------
+
+message ThreadStart {
+    required uint32 flags = 1;
+}
+
+message ThreadEnd {
+    required uint32 flags = 2;
+}
+
+
+// ----------------------------
+// Metadata 
+// ----------------------------
+
+message Timestamp {
+    required uint32 sec  = 1;
+    required uint32 usec = 2;
+}
+
+enum Arch {
+    ARCH_X86 = 1;
+    ARCH_X86_64 = 2;
+}
+
+message TraceStart {
+    required Timestamp timestamp = 1;
+    required Arch arch = 2;
+    optional string software = 3;
+    optional string target = 4; 
+    optional string cmdline = 5;
+    optional string os_uname = 6;
+}
+
+message TraceEnd {
+    required Timestamp timestamp = 2;
+}
+
+// ----------------------------
+// Cross-references for inter-thread synchronization
+// ----------------------------
+
+message MicroEventLogPtr {
+    required uint32 tid = 1;
+    required uint32 next_instruction = 2;
+}
+
+// ----------------------------
+// Root message type
+// ----------------------------
+
+message Event {
+    required uint32 id = 1;
+    required uint32 pid = 2;
+    required uint32 tid = 3;
+    repeated MicroEventLogPtr cross_ref = 100;
+
+    optional TraceStart trace_start = 10;
+    optional TraceEnd trace_end = 11;
+
+    optional ThreadStart thread_start = 20;
+    optional ThreadEnd thread_end = 21;
+
+    optional TraceDisassembly trace_disasm = 30;
+
+    optional ModuleLoad mod_load = 40;
+    optional ModuleUnload mod_unload = 41;
+    optional ModuleSymbols mod_symbols = 42;
+
+    optional MicroEventLog micro_event_log = 50;
+
+    optional Malloc malloc = 60;
+    optional Realloc realloc = 61;
+    optional Free free = 62;
+    optional Calloc calloc = 63;
+
+}
+

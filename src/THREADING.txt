@@ -1,0 +1,58 @@
+
+We're not nearly as smart as pinplay, we don't make a fully memory-consistent
+trace when there are multiple threads.
+
+However, we DO want to know (ideal down to the instruction level) where each 
+thread was when a given "important" even occurred, such as a malloc or free.
+
+The initial (naive approach) was to force all micro-event logs to be flushed 
+when a "heavyweight operation such as a malloc or free occurred.
+
+That turned out to be a silly idea.  Of course it is perfectly legal for one 
+program thread to be suspended in the middle of running intrumentation code.
+
+The problem then being that the microeventlogs could then be in an inconsistent 
+state when we want to perform the flush. Note that this is NOT a problem for 
+threads stuck in e.g. system calls - these threads should have consistent 
+microevent logs.
+
+The initial approach was that the thread flushing a protobuf just goes through and
+flushes the microeventlogs for all other threads.  Unfortunately, inconsistent event
+logs caused either crashes at runtime or during analysis.
+
+So this leaves us with a couple of alternatives for memory consistency:
+
+1) Inter-thread messaging
+
+When a thread hits a macro-event, it could set a "flush" flag or signal which 
+all the other threads could see. They could then go along and dump their buffers.
+
+2) Global counter
+
+We maintain a global counter, and each thread atomic increments this to get a
+globally unique and monotonically increasing "event number".  Every thread writes 
+the event number into every event. I think the problem with this is that 
+read-modify-write is fairly expensive, particularly as the number of threads in 
+the program grows, and they all fight for the counter.
+
+I have not tested this.
+
+3) Per-thread counters
+
+Alternatively, each thread thread maintains a counter of how far into the 
+microeventlog it is. When a "big" operation occurs, the flushing thread can read 
+that counter from all the other threads and write that into the event. 
+
+This does look kind of expensive if we have lots of threads.
+
+This seems better than a global counter though; each thread just needs to 
+increment its own counter after each instruction. 
+
+This does mean a bit of fluffing around when threads terminate to mak
+
+In a sense, what we end up with is two parallel streams; the macro-events and the
+micro-events. There is no particular synchronisation between microeventlogs except
+at event boundaries.
+
+This is the approach that has been taken.
+
