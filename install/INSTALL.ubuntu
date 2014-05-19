@@ -2,8 +2,7 @@
 UBUNTU INSTALLATION
 ===================
 
-* Install dependencies and (optionally) enable ptrace of non-child processes. No changes to
-  your system will be made without your approval.
+* Install dependencies and (optionally) enable ptrace of non-child processes. 
 
         cd ztracer/install/scripts
         ./ubuntu_install_deps.sh
