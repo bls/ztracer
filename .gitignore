@@ -20,6 +20,10 @@
 *.out
 *.app
 
+# Protobuf
+*.pb.cpp
+*.pb.h
+
 # Python stuff
 *.pyc
 
