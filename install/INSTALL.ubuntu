@@ -2,11 +2,17 @@
 UBUNTU INSTALLATION
 ===================
 
+* The following releases have been tested.
+
+| OS                    | Status  |
+| --------------------- | ------- |
+| Ubuntu 14.04 LTS      | OK      |
+
 * Install dependencies and (optionally) enable ptrace of non-child processes. 
 
-        cd ztracer/install/scripts
-        ./ubuntu_install_deps.sh
-        ./ubuntu_fix_ptrace.sh
+        cd ztracer
+        ./install/scripts/ubuntu_install_deps.sh
+        ./install/scripts/ubuntu_fix_ptrace.sh
 
 * Install PIN (installs a local copy for ZTracer). This downloads a fresh copy of pin, unpacks
   it inside the ztracer directory and creates an environment setup file.
