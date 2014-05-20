@@ -7,7 +7,7 @@ compiler:
 # sadly only available in travis private
 
 before_install:
-  - sudo ./install/scripts/ubuntu_install_deps.sh
+  - sudo ./scripts/ubuntu/install_deps.sh
   - ./setup_pin.sh
 
 install:
