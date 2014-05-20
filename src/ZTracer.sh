@@ -18,8 +18,10 @@ esac
 INJECTION=dynamic
 if [ "$SYSTEM" == "Linux" ]; then
     PTRACE_FILE=/proc/sys/kernel/yama/ptrace_scope
-    if [ -f "$PTRACE_FILE" -a $(cat $PTRACE_FILE) -eq 1 ]; then
-        INJECTION=child
+    if [ -r "$PTRACE_FILE" ]; then
+        if [ $(cat $PTRACE_FILE) -eq 1 ]; then
+            INJECTION=child
+        fi
     fi
 fi
 
