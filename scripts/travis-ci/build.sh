@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-. pin_env.sh
+source ./pin_env.sh
 cd src
 make
 
