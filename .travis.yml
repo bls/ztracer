@@ -14,9 +14,7 @@ install:
   - ./scripts/travis-ci/build.sh
 
 script:
-  - cd src
-  - ./ZTracer.sh ls
-  - cd ..
+  - ./scripts/travis-ci/runtest.sh
 
 notifications:
   email:
