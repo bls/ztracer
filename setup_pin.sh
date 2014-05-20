@@ -1,6 +1,5 @@
 #!/usr/bin/env bash 
 
-set -x
 set -u
 
 PIN_DOWNLOAD_URL="https://software.intel.com/sites/landingpage/pintool/downloads"
