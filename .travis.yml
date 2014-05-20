@@ -11,7 +11,7 @@ before_install:
   - ./setup_pin.sh
 
 install:
-  - ./ci/travis_build.sh
+  - ./scripts/travis-ci/build.sh
 
 script:
   - cd src
