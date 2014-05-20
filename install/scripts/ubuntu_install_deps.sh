@@ -34,19 +34,19 @@ install_deps() {
 install64_multiarch() {
     dpkg --add-architecture i386
     apt-get update -qq
-    apt-get install libc6:i386 libstdc++6:i386
-    apt-get install $BASE_PKGS
+    apt-get -y install libc6:i386 libstdc++6:i386
+    apt-get -y install $BASE_PKGS
 }
 
 install64_old() {
     apt-get update -qq
-    apt-get install ia32-lib
-    apt-get install $BASE_PKGS
+    apt-get -y install ia32-lib
+    apt-get -y install $BASE_PKGS
 }
 
 install32() {
     apt-get update -qq
-    apt-get install $BASE_PKGS
+    apt-get -y install $BASE_PKGS
 }
 
 install_deps
