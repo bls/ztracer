@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-SYSTEM=`uname -s`
-ARCH=`uname -m`
+SYSTEM=$(uname -s)
+ARCH=$(uname -m)
 
 case "$SYSTEM" in
     Darwin) LIBEXT=       ;;
@@ -13,6 +13,16 @@ case "$ARCH" in
     *)      LIBDIR=obj-ia32    ;;
 esac
 
-pin -follow_execv 1 -separate_memory 1 -t "${LIBDIR}/ZTracer${LIBEXT}" -- $@;
+# Workaround Linux ptrace hardening if user elected not to
+# allow non-child ptrace.
+INJECTION=dynamic
+if [ "$SYSTEM" == "Linux" ]; then
+    PTRACE_FILE=/proc/sys/kernel/yama/ptrace_scope
+    if [ -f "$PTRACE_FILE" -a $(cat $PTRACE_FILE) -eq 1 ]; then
+        INJECTION=child
+    fi
+fi
 
+pin -injection "$INJECTION" -follow_execv 1 -separate_memory 1 \
+    -t "${LIBDIR}/ZTracer${LIBEXT}" -- $@;
 
