@@ -36,5 +36,5 @@ pin_env.sh
 pin-2.13*
 
 # Data
-run.trace.[0-9]+
+run.trace.*
 
