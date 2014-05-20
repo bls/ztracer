@@ -3,6 +3,8 @@ ZTRACER
 
 Program tracer, based on PIN, Protobufs and Python.
 
+[![Build Status](https://travis-ci.org/bls/ztracer.svg?branch=master)](https://travis-ci.org/bls/ztracer)
+
 ## INSTALL ##
 
 Installation instructions for Linux, OSX and Windows are available in the "install" directory.
