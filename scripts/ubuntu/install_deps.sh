@@ -9,7 +9,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # PIN on 64-bit Ubuntu requires 32-bit compatibility libraries.
-# This used to be ia32-libs, but that all changed in Ubuntu 13.10
+# This used to be ia32-libs, but that all changed in Ubuntu 11.10
 # with multiarch.
 
 install_deps() {
@@ -19,9 +19,9 @@ install_deps() {
     local RELEASE_MINOR=`echo $RELEASE | cut -d. -f2`
 
     if [[ "$ARCH" -eq "x86_64" ]]; then
-        if [[ "$RELEASE_MAJOR" -gt 13 ]]; then
+        if [[ "$RELEASE_MAJOR" -gt 11 ]]; then
             install64_multiarch
-        elif [[ "$RELEASE_MAJOR" -eq 13 && "$RELEASE_MINOR" -ge 10 ]]; then
+        elif [[ "$RELEASE_MAJOR" -eq 11 && "$RELEASE_MINOR" -ge 10 ]]; then
             install64_multiarch
         else
             install64_old
