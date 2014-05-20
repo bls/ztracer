@@ -1,0 +1,33 @@
+language: cpp
+
+compiler:
+  - gcc
+
+# TODO: caching for apt and also for PIN downloads
+# sadly only available in travis private
+
+before_install:
+  - sudo ./install/scripts/ubuntu_install_deps.sh
+  - ./setup_pin.sh
+
+install:
+  - ./ci/travis_build.sh
+
+script:
+  - cd src
+  - ./ZTracer.sh ls
+  - cd ..
+
+notifications:
+  email:
+    recipients:
+      - blair.strang@gmail.com
+
+    on_success: always
+    on_failure: always
+
+os:
+  - linux
+
+
+ 
