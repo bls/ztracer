@@ -4,8 +4,7 @@ set -u
 
 PIN_DOWNLOAD_URL="https://software.intel.com/sites/landingpage/pintool/downloads"
 # PIN_KIT_OSX="pin-2.13-61206-clang.3.0-mac"
-# PIN_KIT_OSX="pin-2.13-65163-clang.5.0-mac.tar.gz"  # no makefile.config :/
-PIN_KIT_OSX="pin-2.13-61206-clang.4.2-mac.tar.gz"
+PIN_KIT_OSX="pin-2.13-65163-clang.5.0-mac" 
 PIN_KIT_WINDOWS="pin-2.13-61206-msvc10-windows"
 PIN_KIT_LINUX="pin-2.13-61206-gcc.4.4.7-linux"
 
