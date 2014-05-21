@@ -102,8 +102,6 @@ message ModuleUnload {
     required uint32 id = 1;
 }
 
-
-
 // ----------------------------
 // Symbols
 // ----------------------------
@@ -208,13 +206,20 @@ enum Arch {
     ARCH_X86_64 = 2;
 }
 
+enum Platform {
+    PLATFORM_LINUX = 1;
+    PLATFORM_OSX = 2;
+    PLATFORM_WINDOWS = 3;
+}
+
 message TraceStart {
     required Timestamp timestamp = 1;
     required Arch arch = 2;
-    optional string software = 3;
-    optional string target = 4; 
-    optional string cmdline = 5;
-    optional string os_uname = 6;
+    required Platform platform = 3;
+    optional string software = 4;
+    optional string target = 5; 
+    optional string cmdline = 6;
+    optional string os_uname = 7;
 }
 
 message TraceEnd {
@@ -229,6 +234,15 @@ message MicroEventLogPtr {
     required uint32 tid = 1;
     required uint32 next_instruction = 2;
 }
+
+// ----------------------------
+// Register Dumps
+// ----------------------------
+
+//message Reg {
+//    required Reg reg = 1;
+//    required uint64 value = 2;
+//}
 
 // ----------------------------
 // Root message type

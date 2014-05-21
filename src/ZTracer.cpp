@@ -233,6 +233,21 @@ set_timestamp_to_now(ztrace::Timestamp *ts)
 #endif
 }
 
+static ztrace::Platform
+get_platform()
+{
+#ifdef __APPLE__
+  return ztrace::PLATFORM_OSX;
+#elif __linux__
+  return ztrace::PLATFORM_LINUX;
+#elif WIN32
+  return ztrace::PLATFORM_WINDOWS;
+#else
+#error "Unknown platform!"
+#endif
+}
+
+
 void
 ZTracer::LogTraceStart()
 {
@@ -242,6 +257,7 @@ ZTracer::LogTraceStart()
     set_timestamp_to_now(ts);
     // Yeah, yeah, I know...
     ev_start->set_arch(sizeof(void *) == 8 ? ztrace::ARCH_X86_64 : ztrace::ARCH_X86);
+    ev_start->set_platform(get_platform());
     ev_start->set_software("ZTrace");
     //ev_start->set_target();
     //ev_start->set_cmdline();
