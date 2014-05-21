@@ -100,8 +100,9 @@ ZTRACER_OBJS = $(OBJDIR)ZTrace.pb$(OBJ_SUFFIX) \
                $(OBJDIR)TraceRegisters$(OBJ_SUFFIX) \
                $(OBJDIR)TraceDisassembly$(OBJ_SUFFIX) \
                $(OBJDIR)TraceMalloc$(OBJ_SUFFIX) \
-               $(OBJDIR)TraceModules$(OBJ_SUFFIX) \
-               $(OBJDIR)MemoryMap$(OBJ_SUFFIX) 
+               $(OBJDIR)TraceModules$(OBJ_SUFFIX) 
+
+#               $(OBJDIR)MemoryMap$(OBJ_SUFFIX) 
 
 $(OBJDIR)ZTracer$(PINTOOL_SUFFIX): $(ZTRACER_OBJS)
 	$(LINKER) $(TOOL_LDFLAGS) $(LINK_EXE)$@ $(^:$(OBJDIR)dummy=) $(TOOL_LPATHS) $(EXTRA_LPATHS) $(TOOL_LIBS) $(EXTRA_LIBS)
