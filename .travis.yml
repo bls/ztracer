@@ -1,13 +1,10 @@
 language: cpp
 
-compiler:
-  - gcc
-
 # TODO: caching for apt and also for PIN downloads
 # sadly only available in travis private
 
 before_install:
-  - sudo ./scripts/ubuntu/install_deps.sh
+  - ./scripts/travis-ci/install_deps.sh
   - ./setup_pin.sh
 
 install:
@@ -26,6 +23,5 @@ notifications:
 
 os:
   - linux
-
-
+  - osx
  

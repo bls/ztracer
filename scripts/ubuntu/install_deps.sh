@@ -1,7 +1,7 @@
 #!/bin/bash
 
-BASE_PKGS="build-essential liblog4cpp5-dev libprotobuf-dev protobuf-compiler"
-BASE_PKGS="$BASE_PKGS libsnappy-dev python-snappy python-protobuf"
+SYS_PKGS="build-essential liblog4cpp5-dev libprotobuf-dev protobuf-compiler"
+PY_PKGS="libsnappy-dev python-snappy python-protobuf"
 
 if [[ $EUID -ne 0 ]]; then
     echo "Please run this script as root."
@@ -35,18 +35,19 @@ install64_multiarch() {
     dpkg --add-architecture i386
     apt-get update -qq
     apt-get -y install libc6:i386 libstdc++6:i386
-    apt-get -y install $BASE_PKGS
+    apt-get -y install $SYS_PKGS $PY_PKGS
 }
 
 install64_old() {
     apt-get update -qq
     apt-get -y install ia32-lib
-    apt-get -y install $BASE_PKGS
+    apt-get -y install $SYS_PKGS $PY_PKGS
 }
 
 install32() {
     apt-get update -qq
-    apt-get -y install $BASE_PKGS
+    apt-get -y install $SYS_PKGS $PY_PKGS
 }
 
 install_deps
+

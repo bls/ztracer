@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 PTRACE_SYSCTL=kernel.yama.ptrace_scope
 PTRACE_CONF=/etc/sysctl.d/10-ptrace.conf
@@ -24,7 +24,7 @@ temporarily_fix_ptrace() {
 }
 
 main() {
-    if test `sysctl -n $PTRACE_SYSCTL` -eq 0; then
+    if [ $(sysctl -n $PTRACE_SYSCTL) -eq 0] then
         sysctl $PTRACE_SYSCTL
         echo "Looks like ptrace is not restricted, no action required"
         exit 0
