@@ -7,7 +7,7 @@ cd src
 # to build PIN tools on OSX.
 if [ $(uname -s) == "Darwin" ]; then
     export CC=clang
-    export CXX=clang
+    export CXX=clang++
 fi
 make
 
