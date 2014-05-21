@@ -26,3 +26,18 @@ OP_NEWPC takes up a lot of space, it seems; maybe makes sense to only log BBL hi
 3) Scan for PC text
 4) Scan for symbols
 
+
+Packaging
+Use Vagrant for tests across platforms?
+
+Can we check for ignored function return values?
+
+Use after free analysis
+Process object / pointer graph
+Object lifecycles and state changes
+
+Code -> object links
+
+Add extra fields in protobufs?   Maybe it makes sense to transform the instructions etc further?
+
+
