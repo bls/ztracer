@@ -11,7 +11,7 @@ LOG_INIT("ZTraceMain");
 
 INT32 Usage()
 {
-  PIN_ERROR( "This Pintool prints a trace of memory addresses\n"
+  PIN_ERROR( "This pintool logs PIN events to protobufs\n"
              + KNOB_BASE::StringKnobSummary() + "\n");
   return -1;
 }
@@ -21,7 +21,7 @@ ZTracer ztracer;
 int 
 main(int argc, char **argv)
 {
-#ifdef FUCKING_VERSIONS
+#ifdef THIS_BREAKS_BUILDS
     GOOGLE_PROTOBUF_VERIFY_VERSION;
 #endif
 
@@ -32,7 +32,6 @@ main(int argc, char **argv)
     log4cpp::Category& root = log4cpp::Category::getRoot();
     root.setPriority(log4cpp::Priority::WARN);
     root.removeAllAppenders();
-    // TODO: care about memory leak here...
     log4cpp::FileAppender *fileapp = new log4cpp::FileAppender("_", ::dup(fileno(stdout)));
     root.addAppender(fileapp);
 

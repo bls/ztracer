@@ -40,4 +40,6 @@ Code -> object links
 
 Add extra fields in protobufs?   Maybe it makes sense to transform the instructions etc further?
 
+Registers and flags tracing?
+
 

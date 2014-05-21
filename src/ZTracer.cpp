@@ -115,15 +115,13 @@ ZTracer::WriteEventUnlocked(const ztrace::Event *msg)
 void
 ZTracer::Instrument()
 {
+    TRACE_AddInstrumentFunction(TraceMicroEvent, 0); 
     TRACE_AddInstrumentFunction(TraceDisassembly, this);
-    // INS_AddInstrumentFunction(InsTraceRegisters, 0);
     IMG_AddInstrumentFunction(ImgTraceModuleLoad, this);
     IMG_AddUnloadFunction(ImgTraceModuleUnload, this);
     IMG_AddInstrumentFunction(ImgTraceMalloc, this);
-    // The next line looks like an error, but isn't. The memory tracer
-    // doesn't get ZTracer from VOID *v; rather, it just logs to MicroEventLog
-    // via ThreadData.
-    TRACE_AddInstrumentFunction(TraceMicroEvent, 0); 
+    // INS_AddInstrumentFunction(InsTraceRegisters, );
+
 #ifndef _WIN32
     //PIN_AddForkFunction(FPOINT_AFTER_IN_CHILD, FollowChild, 0);
     //PIN_AddForkFunction(FPOINT_AFTER_IN_PARENT, FollowParent, 0);
@@ -147,31 +145,8 @@ VOID
 ZTracer::OnFinish(INT32 code)
 {
     INT pid = PIN_GetPid();
-    for(UINT32 i = 0; i< PIN_MAX_THREADS; i++) {
-        /*
-        MicroEventLog& transLog = gMicroEventLog[i];
-        if(transLog.totalMemReads || transLog.totalMemWrites || transLog.totalRegWrites) {
-            LOG_INFO("Log buffer stats for pid/thread: %d/%d", pid, i);
-            LOG_INFO("    flushCount          : %llu", transLog.flushCount);
-            LOG_INFO("    totalMemReads       : %llu", transLog.totalMemReads);
-            LOG_INFO("    totalMemReadBytes   : %llu", transLog.totalMemReadBytes);
-            LOG_INFO("    totalMemWrites      : %llu", transLog.totalMemWrites);
-            LOG_INFO("    totalMemWriteBytes  : %llu", transLog.totalMemWriteBytes);
-            LOG_INFO("    totalRegWrites      : %llu", transLog.totalRegWrites);
-            LOG_INFO("    totalRegWriteBytes  : %llu", transLog.totalRegWriteBytes);
-            // LOG_INFO("    logSizeUncompressed : %llu", transLog.logSizeUncompressed);
-            // LOG_INFO("    logSizeCompressed   : %llu", transLog.logSizeCompressed);
-        }
-        */
-        ;
-    }
     LOG_WARN("END PID: %d PIN MEMORY: %d", pid, PIN_MemoryAllocatedForPin());
-    // timing stuff would be nice above, too.
-
     CloseLog();
-
-    // TODO: See if we need to do this.
-    // log4cpp::Category::shutdown();  ??
 }
 
 
@@ -194,7 +169,8 @@ ZTracer::OnFollowChildProcess(CHILD_PROCESS childProcess)
     }
     LOG_WARN("PID %d starting child with args: \"%s\"", PIN_GetPid(), cmdline.c_str());
 
-    return TRUE; // Unconditionally Inject, for now...
+    // Unconditionally Inject, for now...
+    return TRUE; 
 }
 
 VOID
