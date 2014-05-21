@@ -43,15 +43,16 @@ function wget_get() {
 
 if [ ! -d "${INSTALL_DIR}/${PIN_KIT}" ]; then
     if type -p curl 2>/dev/null; then
-        DLFUN=curl_get
+        DL=curl_get
     elif type -p wget 2>/dev/null; then
         DL=wget_get
     else
         echo "Sorry, couldn't find a download program :("
+        echo "Get curl or wget."
         exit 1
     fi
     rm -f "${INSTALL_DIR}/${PIN_TGZ}"
-    $DLFUN "$PIN_URL" "${INSTALL_DIR}/${PIN_TGZ}"
+    $DL "$PIN_URL" "${INSTALL_DIR}/${PIN_TGZ}"
     tar x -C "${INSTALL_DIR}" -zf "${PIN_TGZ}"
 fi
 
