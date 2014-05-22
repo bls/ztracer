@@ -3,17 +3,16 @@
 
 #include "pin.H"
 #include <vector>
+#include <string>
 
 class MemoryRegion {
  public:
   ADDRINT addr;
   ADDRINT endaddr;
-  bool readable;
-  bool writable;
-  bool executable;
+  std::string perms;
 };
 
 bool
-read_memory_regions(std::vector<MemoryRegion>& regions);
+read_memory_regions(std::vector<MemoryRegion> *regions);
 
 #endif

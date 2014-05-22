@@ -8,7 +8,7 @@ def main():
     for eh in reader.events():
         msg = eh.event
         if msg.HasField("micro_event_log"):
-            for micro_event in trace.decode_micro_events(msg):
+            for micro_event in reader.decode_micro_ops(msg):
                 print "#" + str(micro_event)
 
             msg.micro_event_log.data = "[ ... ]"

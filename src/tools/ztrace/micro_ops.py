@@ -99,7 +99,7 @@ class OP_CALL(object):
 
     def __str__(self):
         return "OP_CALL target=%x sp=%x is_call_direct=%d" %\
-               (self.pc, self.target, self.sp, self.is_direct_call)
+               (self.target, self.sp, self.is_direct_call)
 
     @staticmethod
     def decode(io):

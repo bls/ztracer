@@ -6,7 +6,7 @@
 #include <linux/limits.h>
 
 bool
-read_memory_regions(std::vector<MemoryRegion>& regions)
+read_memory_regions(std::vector<MemoryRegion> *regions)
 {
   FILE *fp = fopen("/proc/self/maps", "r");
   if(fp == NULL) {
@@ -21,12 +21,12 @@ read_memory_regions(std::vector<MemoryRegion>& regions)
   long long inode;
   char filename[PATH_MAX];
 
-  regions.clear();
+  regions->clear();
   while(1) {
     int ret = fscanf (fp,  "%llx-%llx %s %llx %s %llx", 
 		      &addr, &endaddr, &permissions[0], &offset, 
 		      &device[0], &inode);
-    if (ret > 0 && ret != EOF && inode != 0) {
+    if (ret > 0 && ret != EOF) { // && inode != 0
       ret += fscanf (fp, "%s\n", filename);
     } else {
       filename[0] = '\0'; /* no filename */
@@ -36,12 +36,10 @@ read_memory_regions(std::vector<MemoryRegion>& regions)
       break;
     }
     MemoryRegion r;
-    r.readable = (strchr (permissions, 'r') != 0);
-    r.writable = (strchr (permissions, 'w') != 0);
-    r.executable = (strchr (permissions, 'x') != 0);
     r.addr = addr;
     r.endaddr = endaddr;
-    regions.push_back(r);
+    r.perms = std::string(permissions);
+    regions->push_back(r);
   }
 
   fclose(fp);

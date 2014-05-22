@@ -2,6 +2,7 @@
 import struct, ZTrace_pb2, snappy, contextlib
 from util import event_type
 import cStringIO as StringIO
+from micro_ops import *
 from micro_ops_io import *
 from instruction_ops import *
 
