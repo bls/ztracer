@@ -2,7 +2,7 @@ language: cpp
 
 compiler:
   - gcc
-#  - clang
+  - clang
 
 # TODO: caching for apt and also for PIN downloads
 # sadly only available in travis private
