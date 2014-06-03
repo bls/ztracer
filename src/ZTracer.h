@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <set>
+#include <string>
 #include "pin.H"
 #include "ZTrace.pb.h"
 
@@ -18,6 +19,10 @@ public:
     // Create & write event messages.  Use this from threads.
     ztrace::Event MakeEvent();
     void WriteEvent(ztrace::Event *msg);
+
+    // Raw memory dumps for debugging / verification.
+    void DumpMemoryRegion(ADDRINT addr, ADDRINT endaddr, std::string perms);
+    void DumpAllWritableMemory();
 
 public:
     // Pin callbacks    

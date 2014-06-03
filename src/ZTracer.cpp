@@ -8,9 +8,11 @@
 #include "TraceRegisters.h"
 #include "TraceModules.h"
 #include "TraceMalloc.h"
+#include "MemoryMap.h"
 #include <sys/time.h>
 #include <arpa/inet.h>
 #include <limits>
+#include <vector>
 
 LOG_INIT("ZTracer");
 
@@ -146,6 +148,12 @@ ZTracer::OnFinish(INT32 code)
 {
     INT pid = PIN_GetPid();
     LOG_WARN("END PID: %d PIN MEMORY: %d", pid, PIN_MemoryAllocatedForPin());
+
+    // DEBUGGING!
+    LOG_WARN("Dumping writable memory...");
+    DumpAllWritableMemory();
+    LOG_WARN("Done!");
+
     CloseLog();
 }
 
@@ -273,4 +281,48 @@ ZTracer::LogTraceEnd()
     ztrace::Timestamp *ts = ev_end->mutable_timestamp();
     set_timestamp_to_now(ts);
     WriteEvent(&ev);
+}
+
+void 
+ZTracer::DumpMemoryRegion(ADDRINT addr, ADDRINT endaddr, std::string perms)
+{
+  LOG_WARN("dumping!!!");
+
+  ztrace::Event ev = MakeEvent();
+  ztrace::MemoryDump *mem_dump = ev.mutable_memory_dump();
+  ztrace::MemoryRegion *mem_region = mem_dump->mutable_region();
+
+  mem_region->set_addr(addr);
+  mem_region->set_endaddr(addr);
+  mem_region->set_perms(perms);
+
+  assert(endaddr > addr);
+  size_t size = endaddr - addr;
+
+  std::vector<unsigned char> buf(size);
+  size_t ret = PIN_SafeCopy(&buf[0], (void *)addr, size);
+  if(ret != size) {
+    LOG_WARN("DumpMemoryRegion: expected %d bytes, got %d", size, ret);
+  }
+  mem_dump->set_data(&buf[0], size);
+  
+  WriteEvent(&ev);
+}
+
+void 
+ZTracer::DumpAllWritableMemory()
+{
+  std::vector<MemoryRegion> regions;
+  bool ret = read_memory_regions(&regions);
+  if(!ret) {
+    LOG_WARN("DumpAllWritableMemory: failed to get memory map :(");
+    return;
+  }
+  std::vector<MemoryRegion>::iterator it;
+  for(it = regions.begin(); it != regions.end(); ++it) {
+    LOG_WARN("Region: %p -> %p (%s)", it->addr, it->endaddr, it->perms.c_str());
+    if(it->perms.find('w') != std::string::npos) {
+      DumpMemoryRegion(it->addr, it->endaddr, it->perms);
+    }
+  }
 }

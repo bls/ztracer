@@ -248,16 +248,15 @@ message MicroEventLogPtr {
 // Memory region dumps
 // ----------------------------
 
-message MemoryPermissions {
-    required bool r = 1;
-    required bool w = 2;
-    required bool x = 3;
+message MemoryRegion {
+    required uint64 addr = 1;
+    required uint64 endaddr = 2;
+    optional string perms = 3;
 }
 
 message MemoryDump {
-    required uint64 addr = 1;
-    required uint64 endaddr = 2;
-    required MemoryPermissions perms = 3;
+    required MemoryRegion region = 1;
+    optional bytes data = 2;
 }
 
 // ----------------------------
