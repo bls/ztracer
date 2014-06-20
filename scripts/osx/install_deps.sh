@@ -20,7 +20,6 @@ if ! which easy_install>/dev/null; then
 fi
 
 echo "Installing system dependencies via homebrew..."
-brew install protobuf log4cpp snappy
 brew install bls/ztracer/log4cpp bls/ztracer/protobuf bls/ztracer/snappy --build-from-source
 
 
