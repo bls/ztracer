@@ -1,8 +1,8 @@
 language: cpp
 
-compiler:
-  - gcc
-  - clang
+#compiler:
+#  - gcc
+#  - clang
 
 # TODO: caching for apt and also for PIN downloads
 # sadly only available in travis private
@@ -27,5 +27,5 @@ notifications:
 
 os:
   - linux
-#  - osx
+  - osx
  

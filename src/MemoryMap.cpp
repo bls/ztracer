@@ -46,4 +46,12 @@ read_memory_regions(std::vector<MemoryRegion> *regions)
   return true;
 }
 
+#elif __APPLE__
+
+bool
+read_memory_regions(std::vector<MemoryRegion> *regions)
+{
+  return false;
+}
+
 #endif

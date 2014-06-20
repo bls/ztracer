@@ -57,6 +57,9 @@ EXTRA_LIBS := -llog4cpp -lsnappy -lprotobuf
 # Add this for OSX to find libraries installed with homebrew.
 EXTRA_LPATHS := -L/usr/local/lib
 
+# Again, for OSX
+TOOL_CXXFLAGS += -I/usr/local/include
+
 ##############################################################
 #
 ##############################################################
